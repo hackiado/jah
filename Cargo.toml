@@ -1,0 +1,11 @@
+[package]
+name = "jah"
+version = "0.1.0"
+edition = "2024"
+description = "A modern vcs"
+authors = ["jah"]
+repository = "https://github.com/rustaroots/jah"
+categories = ["command-line-utilities"]
+keywords = ["vcs"]
+license = "AGPL-3"
+readme = "README.md"
