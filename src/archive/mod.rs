@@ -33,30 +33,34 @@ impl Archive {
 
     #[doc = "create archive after tests"]
     pub fn create(self) -> ExitCode {
-        assert!(self.clone().check(), "Cannot create archive");
-        if Path::new(".jah").is_dir() {
+        if Path::new("Cargo.toml").exists() {
+            assert!(self.clone().check(), "Cannot create archive");
+            if Path::new(".jah").is_dir() {
+                assert!(
+                    remove_dir_all(".jah").is_ok(),
+                    "Cannot remove .jah directory"
+                );
+            }
             assert!(
-                remove_dir_all(".jah").is_ok(),
-                "Cannot remove .jah directory"
+                create_dir_all(".jah").is_ok(),
+                "Cannot create .jah directory"
             );
+            assert!(
+                create_dir_all(".jah/bin").is_ok(),
+                "Cannot create .jah directory"
+            );
+            assert!(
+                fs::copy(
+                    format!("target/release/{}", self.clone().app),
+                    format!(".jah/bin/{}", self.clone().app),
+                )
+                .is_ok(),
+                "Could not copy .jah directory"
+            );
+            return ExitCode::SUCCESS;
         }
-        assert!(
-            create_dir_all(".jah").is_ok(),
-            "Cannot create .jah directory"
-        );
-        assert!(
-            create_dir_all(".jah/bin").is_ok(),
-            "Cannot create .jah directory"
-        );
-        assert!(
-            fs::copy(
-                format!("target/release/{}", self.clone().app),
-                format!(".jah/bin/{}", self.clone().app),
-            )
-            .is_ok(),
-            "Could not copy .jah directory"
-        );
-        ExitCode::SUCCESS
+        println!("No Cargo.toml file found");
+        ExitCode::FAILURE
     }
 
     #[doc = "test application"]
