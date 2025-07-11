@@ -5,7 +5,7 @@ use std::process::{Command, ExitCode};
 
 const CHECKUP: [&str; 6] = [
     "fmt --check",
-    "test",
+    "test --no-fail-fast",
     "clippy -- -D clippy::all -D clippy::cargo",
     "audit",
     "clean",
@@ -45,9 +45,13 @@ impl Archive {
             "Cannot create .jah directory"
         );
         assert!(
+            create_dir_all(".jah/bin").is_ok(),
+            "Cannot create .jah directory"
+        );
+        assert!(
             fs::copy(
                 format!("target/release/{}", self.clone().app),
-                format!(".jah/{}", self.clone().app),
+                format!(".jah/bin/{}", self.clone().app),
             )
             .is_ok(),
             "Could not copy .jah directory"
