@@ -9,3 +9,6 @@ categories = ["command-line-utilities"]
 keywords = ["vcs"]
 license = "AGPL-3"
 readme = "README.md"
+
+[dependencies]
+clap = "4.5.44"
